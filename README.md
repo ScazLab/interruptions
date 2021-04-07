@@ -1,2 +1,0 @@
-# interruptions
-Generalizability interruptions assets
