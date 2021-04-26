@@ -259,7 +259,8 @@ public class MainGameController : MonoBehaviour
                 scene = Constants.SURVEY_COGNITIVELOAD;
                 //SceneManager.LoadScene("Cognitive-Load");
                 SceneManager.LoadScene("Diagnosis");
-
+                //csvStart();
+                //SceneManager.LoadScene("End");
             }
             else if (scene == Constants.SURVEY_COGNITIVELOAD)
             {
@@ -392,12 +393,12 @@ public class MainGameController : MonoBehaviour
                 if (interruption_task == 2) SceneManager.LoadScene("Difficulty-Math");
                 counter++;
             }
-            else 
+            else
             {
                 counter = 0;
                 phase = Constants.PHASE_TRAINING;
             }
-            
+
 
         }
         if (phase == Constants.PHASE_TRAINING)
@@ -932,16 +933,16 @@ public class MainGameController : MonoBehaviour
             }
         }
 
-        string filePath = Application.dataPath + "/CSV/TestData.csv";
+        //string filePath = Application.dataPath + "/CSV/TestData.csv";
 
         //Debug.Log(filePath);
 
-        StreamWriter outStream = new StreamWriter(filePath);
+        //StreamWriter outStream = new StreamWriter(filePath);
 
-        outStream.WriteLine(sb);
+        //outStream.WriteLine(sb);
 
-        outStream.Flush();
-        outStream.Close();
+        //outStream.Flush();
+        //outStream.Close();
 
         //Debug.Log("GOING TO END");
         SceneManager.LoadScene("End");
