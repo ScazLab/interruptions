@@ -54,7 +54,14 @@ public class PathQuestions : MonoBehaviour
 
 		// get elements in answer panel
     	gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
-		counter.text = (gameController.counter).ToString() + "/20"; 
+		if (gameController.counter == 0)
+		{
+			counter.text = "TUTORIAL";
+		}
+		else
+		{
+			counter.text = (gameController.counter).ToString() + "/20";
+		}
 		gameController.interrupts_this_round = SequenceReader.pathSequence[SequenceReader.pathSequenceIndex].interrupts;
         //GameObject[] choices = GameObject.FindGameObjectsWithTag("AnswerChoice");
 		warningMsg = GameObject.Find("Warning");

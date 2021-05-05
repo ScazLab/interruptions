@@ -44,7 +44,14 @@ public class HanoiSetup : MonoBehaviour
 
         gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
 
-        counter.text = (gameController.counter).ToString() + "/20";
+        if (gameController.counter == 0)
+        {
+            counter.text = "TUTORIAL";
+        }
+        else
+        {
+            counter.text = (gameController.counter).ToString() + "/20";
+        }
 
         //gameController.moves_to_interrupt = state.moves_to_interrupt;
 

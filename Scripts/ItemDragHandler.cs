@@ -52,7 +52,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBe
             Vector3 pos = Camera.main.WorldToViewportPoint(gameObject.transform.position);
             Vector2 screenpos = new Vector2(((pos.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),((pos.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
             gameObject.GetComponent<HanoiPiece>().being_dragged = 0;
-            if ((screenpos.x > -300) & (screenpos.x < -200))
+            if ((screenpos.x > -350) & (screenpos.x < -150))
             {
                 int s = hanoiSetup.spaceToOccupy(0, gameObject.GetComponent<HanoiPiece>());
                 if (s != -1)
@@ -69,7 +69,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBe
                     gameObject.transform.position = originalPosition;
                 }
             }
-            else if ((screenpos.x > -50) & (screenpos.x < 50))
+            else if ((screenpos.x > -100) & (screenpos.x < 100))
             {
                 int s = hanoiSetup.spaceToOccupy(1, gameObject.GetComponent<HanoiPiece>());
                 if (s != -1)
@@ -88,7 +88,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBe
                 }
             }
             
-            else if ((screenpos.x > 200) & (screenpos.x < 300)) //peg2
+            else if ((screenpos.x > 150) & (screenpos.x < 350)) //peg2
             //else if ((gameObject.transform.position.x > 31) & (gameObject.transform.position.x < 43)) //peg2
             {
                 int s = hanoiSetup.spaceToOccupy(2, gameObject.GetComponent<HanoiPiece>());
