@@ -29,6 +29,9 @@ public class HanoiSetup : MonoBehaviour
     public GameObject block3;
     public GameObject block4;
 
+    GameObject feedback_correct;
+    GameObject feedback_incorrect;
+
     public int skip = 0;
 
     public int n_blocks;
@@ -37,39 +40,16 @@ public class HanoiSetup : MonoBehaviour
 
     void Start()
     {
-
-
         gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
 
-        //gameController.moves_to_interrupt = state.moves_to_interrupt;
+        feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
 
         if (gameController.interruption_just_happened == 0)
         {
-            //Debug.Log(state.moves_to_interrupt);
             gameController.moves_to_interrupt = state.moves_to_interrupt;
-            // debugging: read given intial orientation
-            //Debug.Log("INTIAL ORIENTATION");
-            /*for (int s = 0; s < n_blocks; s++)
-            {
-                Debug.Log(
-                    "Block " + state.start.orientation[s].piece_size +
-                    " on peg " + state.start.orientation[s].peg +
-                    " at height " + state.start.orientation[s].height
-                );
-            }
-
-            // debugging: read given goal orientation
-            //Debug.Log("GOAL ORIENTATION");
-            for (int g = 0; g < n_blocks; g++)
-            {
-                Debug.Log(
-                    "Block " + state.goal.orientation[g].piece_size +
-                    " on peg " + state.goal.orientation[g].peg +
-                    " at height " + state.goal.orientation[g].height
-                );
-            }*/
-
-
 
             for (int i = 0; i < n_blocks; i++)
             {
@@ -246,6 +226,24 @@ public class HanoiSetup : MonoBehaviour
         goal[r_3, p_3] = 3;
     }
 
+    IEnumerator delayTransition(){
+        Debug.Log(Time.time);
+        yield return new WaitForSeconds(5);
+        Debug.Log(Time.time);
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
+        StartCoroutine(delayTransition()); 
+    }
+
     public void checkGoal()
     {
         string configuration = "";
@@ -286,9 +284,10 @@ public class HanoiSetup : MonoBehaviour
           //Debug.Log(configuration);
         }
 
-        //Debug.Log("here");
-        //Debug.Log("final config of this round:");
-        //Debug.Log(configuration);
+        if (gameController.PHASE == "TUTORIAL"){
+            setFeedback(ok == 1);
+        }
+
         if (ok == 0)
         {
           data pathData = new data(0, 0,timeTaken, gameController.PHASE, configuration, 0.0f, gameController.timestamp);

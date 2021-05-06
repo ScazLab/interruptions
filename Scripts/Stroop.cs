@@ -21,7 +21,6 @@ public class Stroop : MonoBehaviour
 
     string[] colors = {"red", "black", "yellow", "green", "blue"};
 
-
     float timeTaken = 0.0f;
     int answerIndex = 0;
     Button Yes;
@@ -29,9 +28,10 @@ public class Stroop : MonoBehaviour
     Text leftText;
     Text rightText;
 
+    GameObject feedback_correct;
+    GameObject feedback_incorrect;
 
     public Text question;
-
 
     public void recordAnswers(int number)
     {
@@ -86,6 +86,10 @@ public class Stroop : MonoBehaviour
             }
         }
 
+        if (gameController.PHASE == "TUTORIAL"){
+            setFeedback(number == answer);
+        }
+
         gameController.changeScene();
 
     }
@@ -128,6 +132,24 @@ public class Stroop : MonoBehaviour
        rightText.text = setColorString(color, word);
     }
 
+    IEnumerator delayTransition(){
+        Debug.Log(Time.time);
+        yield return new WaitForSeconds(5);
+        Debug.Log(Time.time);
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
+        StartCoroutine(delayTransition()); 
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -146,6 +168,10 @@ public class Stroop : MonoBehaviour
         Yes.onClick.AddListener(() => recordAnswers(1));
         No.onClick.AddListener(() => recordAnswers(0));
 
+        feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
     }
 
     // Update is called once per frame

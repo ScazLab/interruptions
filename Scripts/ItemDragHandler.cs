@@ -118,43 +118,4 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler, IBe
         }
         hanoiSetup.checkGoal();
     }
-
-
-    /*public static GameObject itemBeingDragged;
-    GameObject clone;
-    Vector3 origin;
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        gameObject.GetComponent<HanoiPiece>().dragged = 1;
-    }
-    public void OnDrag(PointerEventData eventData)
-    {
-        var v3 = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
-        transform.position = Camera.main.ScreenToWorldPoint(v3); // Allows for camera space conversion
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        int moved = closestSlot(gameObject.transform.position);
-        HanoiPiece p = gameObject.GetComponent<HanoiPiece>();
-        if ((p.original == 1) || (moved == 0))
-        {
-            transform.position = origin; // put the piece back in the original position
-        }
-        else if ((p.original == 0) || (moved == 1))
-        {
-            connections.removePiece(p.snap_piece);
-            Destroy(gameObject);
-
-            //Debug.Log("11111" + gameObject.GetComponent<Piece>().snap_piece);
-
-
-        }
-    }
-
-    public void closestSlot(Vector3 pos)
-    {
-        return 1;
-    }*/
 }

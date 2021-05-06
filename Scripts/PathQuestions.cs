@@ -10,8 +10,10 @@ public class PathQuestions : MonoBehaviour
 	private MainGameController gameController;
     private Text[] textList;
     private Toggle[] toggleList;
-	//private RawImage[] imageList;
 	public GameObject warningMsg;
+
+	GameObject feedback_correct;
+    GameObject feedback_incorrect;
 
 	RawImage option1a;
 	RawImage option1b;
@@ -130,6 +132,10 @@ public class PathQuestions : MonoBehaviour
 		option4[3] = option4d;
 		option4[4] = option4e;
 
+		feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
 
 		warningMsg.SetActive(false);
 		paths_selected = new List<string>(answer_order.Count);
@@ -253,6 +259,9 @@ public class PathQuestions : MonoBehaviour
 
         gameController.allDataResults.Add(pathData);
     	timeTaken=0.0f;
+		if (gameController.PHASE == "TUTORIAL"){
+            setFeedback(percentRight == 100.0);
+        }
 		if (percentRight < 90 && gameController.phase == Constants.PHASE_TUTORIAL)
 		{
 			// Debug.Log("got draw task wrong");
@@ -265,6 +274,24 @@ public class PathQuestions : MonoBehaviour
 			gameController.interruption_just_happened = 0;
 			gameController.changeScene();
 		}
+    }
+
+	IEnumerator delayTransition(){
+        Debug.Log(Time.time);
+        yield return new WaitForSeconds(5);
+        Debug.Log(Time.time);
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
+        StartCoroutine(delayTransition()); 
     }
 
 	public string correct(){
