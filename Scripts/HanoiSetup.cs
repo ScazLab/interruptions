@@ -226,24 +226,6 @@ public class HanoiSetup : MonoBehaviour
         goal[r_3, p_3] = 3;
     }
 
-    IEnumerator delayTransition(){
-        Debug.Log(Time.time);
-        yield return new WaitForSeconds(5);
-        Debug.Log(Time.time);
-    }
-
-    void setFeedback(bool status){
-        if (status == true){
-            feedback_correct.SetActive(true);
-            feedback_incorrect.SetActive(false);
-        }
-        else {
-            feedback_incorrect.SetActive(true);
-            feedback_correct.SetActive(false);
-        }
-        StartCoroutine(delayTransition()); 
-    }
-
     public void checkGoal()
     {
         string configuration = "";
@@ -251,20 +233,12 @@ public class HanoiSetup : MonoBehaviour
         //Debug.Log("checking current state...");
         for (int i = 0; i < n_blocks ; i++)
         {
-            //if(i>0)
-            //{
-            //    configuration += "-";
-            //}
             for (int j = 0; j < 3; j++)
             {
                 if (goal[i, j] != occupied[i,j])
                 {
                     ok = 0;
                 }
-                //if(occupied[3-j,i]!=-1)
-                //{
-                //  configuration+=occupied[3-j,i].ToString();
-                //}
             }
         }
 
@@ -281,11 +255,6 @@ public class HanoiSetup : MonoBehaviour
               configuration += occupied[j,i].ToString();
             }
           }
-          //Debug.Log(configuration);
-        }
-
-        if (gameController.PHASE == "TUTORIAL"){
-            setFeedback(ok == 1);
         }
 
         if (ok == 0)
@@ -300,10 +269,33 @@ public class HanoiSetup : MonoBehaviour
             gameController.allDataResults.Add(pathData);
             //Debug.Log("GOAL REACHED");
             timeTaken=0.0f;
-            gameController.changeScene();
+            if (gameController.PHASE == "TUTORIAL"){
+                setFeedback(ok == 1);
+                Invoke("placeholderDelay", 1);
+            }
+            else {
+                // don't delay transition to next question
+                gameController.changeScene();
+            }
         }
     }
 
+    void placeholderDelay()
+    {
+        // will delay before changing the scene
+        gameController.changeScene();
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
+    }
 
     public int spaceToOccupy(int column, HanoiPiece hp)
     {

@@ -88,10 +88,19 @@ public class Stroop : MonoBehaviour
 
         if (gameController.PHASE == "TUTORIAL"){
             setFeedback(number == answer);
+            Invoke("placeholderDelay", 1);
+        }
+        else {
+            // don't delay transition to next question
+            gameController.changeScene();
         }
 
-        gameController.changeScene();
+    }
 
+    void placeholderDelay()
+    {
+        // will delay before changing the scene
+        gameController.changeScene();
     }
 
     void setStroopQuestions()
@@ -132,12 +141,6 @@ public class Stroop : MonoBehaviour
        rightText.text = setColorString(color, word);
     }
 
-    IEnumerator delayTransition(){
-        Debug.Log(Time.time);
-        yield return new WaitForSeconds(5);
-        Debug.Log(Time.time);
-    }
-
     void setFeedback(bool status){
         if (status == true){
             feedback_correct.SetActive(true);
@@ -147,7 +150,6 @@ public class Stroop : MonoBehaviour
             feedback_incorrect.SetActive(true);
             feedback_correct.SetActive(false);
         }
-        StartCoroutine(delayTransition()); 
     }
 
     // Start is called before the first frame update

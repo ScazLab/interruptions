@@ -259,9 +259,6 @@ public class PathQuestions : MonoBehaviour
 
         gameController.allDataResults.Add(pathData);
     	timeTaken=0.0f;
-		if (gameController.PHASE == "TUTORIAL"){
-            setFeedback(percentRight == 100.0);
-        }
 		if (percentRight < 90 && gameController.phase == Constants.PHASE_TUTORIAL)
 		{
 			// Debug.Log("got draw task wrong");
@@ -272,14 +269,22 @@ public class PathQuestions : MonoBehaviour
 		{
 			SequenceReader.pathSequenceIndex += 1; // mark question as completed
 			gameController.interruption_just_happened = 0;
-			gameController.changeScene();
+
+			if (gameController.PHASE == "TUTORIAL"){
+				setFeedback(percentRight == 100.0);
+				Invoke("placeholderDelay", 1);
+			}
+			else {
+				// don't delay transition to next question
+				gameController.changeScene();
+			}
 		}
     }
 
-	IEnumerator delayTransition(){
-        Debug.Log(Time.time);
-        yield return new WaitForSeconds(5);
-        Debug.Log(Time.time);
+	void placeholderDelay()
+    {
+        // will delay before changing the scene
+        gameController.changeScene();
     }
 
     void setFeedback(bool status){
@@ -291,7 +296,6 @@ public class PathQuestions : MonoBehaviour
             feedback_incorrect.SetActive(true);
             feedback_correct.SetActive(false);
         }
-        StartCoroutine(delayTransition()); 
     }
 
 	public string correct(){

@@ -80,7 +80,17 @@ public class Area : MonoBehaviour
         timeTaken = 0.0f;
         if (gameController.PHASE == "TUTORIAL"){
             setFeedback(card == answer);
+            Invoke("placeholderDelay", 1);
+        }        
+        else {
+            // don't delay transition to next question
+            gameController.changeScene();
         }
+    }
+
+    void placeholderDelay()
+    {
+        // will delay before changing the scene
         gameController.changeScene();
     }
 
@@ -101,12 +111,6 @@ public class Area : MonoBehaviour
         }
     }
 
-    IEnumerator delayTransition(){
-        Debug.Log(Time.time);
-        yield return new WaitForSeconds(5);
-        Debug.Log(Time.time);
-    }
-
     void setFeedback(bool status){
         if (status == true){
             feedback_correct.SetActive(true);
@@ -116,7 +120,6 @@ public class Area : MonoBehaviour
             feedback_incorrect.SetActive(true);
             feedback_correct.SetActive(false);
         }
-        StartCoroutine(delayTransition()); 
     }
 
     // Start is called before the first frame update

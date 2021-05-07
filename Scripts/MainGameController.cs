@@ -6,8 +6,6 @@ using System.Text;
 using System.IO;
 //using System;
 
-
-
 public class data
 {
 
