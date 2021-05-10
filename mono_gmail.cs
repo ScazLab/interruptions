@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 //using System.Security.Cryptography.X509Certificates;
 
 public class mono_gmail : MonoBehaviour
@@ -13,7 +14,9 @@ public class mono_gmail : MonoBehaviour
     void Start()
     {
         Debug.Log("End of the game");
+
         gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
+        Debug.Log(gameController.endEarly);
     }
 
 
@@ -21,7 +24,17 @@ public class mono_gmail : MonoBehaviour
    IEnumerator Upload()
    {
       WWWForm form = new WWWForm();
-      form.AddField("id", gameController.part_id);
+      Debug.Log("sending....");
+      Debug.Log(SceneManager.GetActiveScene().name);
+
+      if(SceneManager.GetActiveScene().name == "End")
+      {
+        form.AddField("id", gameController.part_id);
+      }
+      else
+      {
+        form.AddField("id", "ENDED EARLY");
+      }
       form.AddField("msg", gameController.sb.ToString());
 
        using (UnityWebRequest www = UnityWebRequest.Post("https://interruptions2.uk.r.appspot.com/", form))
@@ -42,8 +55,13 @@ public class mono_gmail : MonoBehaviour
 
     void Update()
     {
-      print(gameController.part_id);
+
       if(gameController.part_id!=""&&sendMail)
+      {
+        StartCoroutine(Upload());
+        sendMail = false;
+      }
+      else if(gameController.endEarly&&sendMail)
       {
         StartCoroutine(Upload());
         sendMail = false;

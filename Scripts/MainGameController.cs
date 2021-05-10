@@ -194,6 +194,7 @@ public class MainGameController : MonoBehaviour
     public int tutorial_n = 1;
     public int h4_counterbalance;
 
+    public bool endEarly = false;
     public int scene = Constants.START;
     //public int scene = Constants.SURVEY_COGNITIVELOAD;
     public int phase = Constants.PHASE_TESTING;
@@ -777,7 +778,13 @@ public class MainGameController : MonoBehaviour
     {
         //string[] csvRowData = new string[21];
 
-
+        /*
+        if(endEarly)
+        {
+          csvRows.Add(new string[1]{"------------------------   ENDED EARLY   ------------------------"});
+          csvRows.Add(new string[1]{"newline"});
+        }
+        */
         Debug.Log("IN CSV START");
         string[] firstHeader = new string[4] {"UID", "Interruption Task", "Starting Task", "Task Switching"};
 
@@ -1100,13 +1107,15 @@ public class MainGameController : MonoBehaviour
             }
 
 
-            //end game, no pay
+            //end game, no pay -- 120
             if (inactive_time > 120)
             {
                 //Debug.Log("INACTIVE");
 
                 //Now you could set time too zero so this happens every 100 frames
                 phase = Constants.PHASE_END;
+                endEarly = true;
+                csvStart();
                 SceneManager.LoadScene("End_nopay");
             }
         }
