@@ -32,6 +32,9 @@ public class Area : MonoBehaviour
 
     Text question;
 
+    GameObject feedback_correct;
+    GameObject feedback_incorrect;
+
     public void recordAnswers(int card)
     {
         int answer = prompt.answer;
@@ -78,42 +81,35 @@ public class Area : MonoBehaviour
 
         answerIndex++;
         timeTaken = 0.0f;
-        //Debug.Log("CHANGING FROM AREA...");
+        if (gameController.PHASE == "TUTORIAL"){
+            setFeedback(card == answer);
+            Invoke("placeholderDelay", 1);
+        }        
+        else {
+            // don't delay transition to next question
+            gameController.changeScene();
+        }
+    }
+
+    void placeholderDelay()
+    {
+        // will delay before changing the scene
         gameController.changeScene();
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
     }
 
     void setAreaQuestions()
     {
-        /*Debug.Log("Question: ("
-            + prompt.c1_first_operand + prompt.c1_operator + prompt.c1_second_operand + ") ? ("
-            + prompt.c2_first_operand + prompt.c2_operator + prompt.c2_second_operand + ") with answer: "
-            + "card #" + prompt.answer);*/
-
-        /*
-        int answerLeft = 0;
-
-        string leftFirst = prompt.c1_first_operand; //numbers[Random.Range(0,8)];
-        string leftSecond = prompt.c1_second_operand; //numbers[Random.Range(0,8)];
-        string rightFirst = prompt.c2_first_operand; // numbers[Random.Range(0,8)];
-        string rightSecond = prompt.c2_second_operand; // numbers[Random.Range(0,8)];
-
-
-        int leftVal = Int32.Parse(leftFirst) * Int32.Parse(leftSecond);
-        int rightVal = Int32.Parse(rightFirst) * Int32.Parse(rightSecond);
-
-        while(leftVal==rightVal){
-            leftFirst = numbers[Random.Range(0,8)];
-            leftVal = Int32.Parse(leftFirst) * Int16.Parse(leftSecond);
-        }
-
-        if(rightVal>leftVal)
-        {
-            answerLeft=1;
-        }
-        */
-
-        //setLeftText(leftFirst, leftSecond);
-        //setRightText(rightFirst, rightSecond);
         setCardText(prompt.c1_first_operand, prompt.c1_second_operand, prompt.c1_operator, 1); // set text on left card
         setCardText(prompt.c2_first_operand, prompt.c2_second_operand, prompt.c2_operator, 2); // set text on right card
 
@@ -132,27 +128,6 @@ public class Area : MonoBehaviour
         }
     }
 
-    /*
-    string setAreaString(string leftTerm, string rightTerm)
-    {
-        string areaString = leftTerm + " ⁎ " + rightTerm;
-
-        return areaString;
-    }
-
-    void setLeftText(string leftTerm, string rightTerm)
-    {
-
-        leftText.text = setAreaString(leftTerm, rightTerm);
-    }
-
-    void setRightText(string leftTerm, string rightTerm)
-    {
-
-        rightText.text = setAreaString(leftTerm, rightTerm);
-    }
-    */
-
     // Start is called before the first frame update
     void Start()
     {
@@ -170,6 +145,11 @@ public class Area : MonoBehaviour
 
         Left.onClick.AddListener(() => recordAnswers(1));
         Right.onClick.AddListener(() => recordAnswers(2));
+
+        feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
     }
 
     // Update is called once per frame

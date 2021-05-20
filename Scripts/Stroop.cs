@@ -29,9 +29,10 @@ public class Stroop : MonoBehaviour
     Text leftText;
     Text rightText;
 
+    GameObject feedback_correct;
+    GameObject feedback_incorrect;
 
     public Text question;
-
 
     public void recordAnswers(int number)
     {
@@ -86,8 +87,32 @@ public class Stroop : MonoBehaviour
             }
         }
 
-        gameController.changeScene();
+        if (gameController.PHASE == "TUTORIAL"){
+            setFeedback(number == answer);
+            Invoke("placeholderDelay", 1);
+        }
+        else {
+            // don't delay transition to next question
+            gameController.changeScene();
+        }
 
+    }
+
+    void placeholderDelay()
+    {
+        // will delay before changing the scene
+        gameController.changeScene();
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
     }
 
     void setStroopQuestions()
@@ -146,6 +171,10 @@ public class Stroop : MonoBehaviour
         Yes.onClick.AddListener(() => recordAnswers(1));
         No.onClick.AddListener(() => recordAnswers(0));
 
+        feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
     }
 
     // Update is called once per frame

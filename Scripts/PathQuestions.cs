@@ -10,8 +10,10 @@ public class PathQuestions : MonoBehaviour
 	private MainGameController gameController;
     private Text[] textList;
     private Toggle[] toggleList;
-	//private RawImage[] imageList;
 	public GameObject warningMsg;
+
+	GameObject feedback_correct;
+    GameObject feedback_incorrect;
 
 	RawImage option1a;
 	RawImage option1b;
@@ -90,7 +92,6 @@ public class PathQuestions : MonoBehaviour
 		choices[7] = choice7;
 		choices[8] = choice8;
 
-
 		option1a = GameObject.Find("Option1a").GetComponentInChildren<RawImage>();
 		option1b = GameObject.Find("Option1b").GetComponentInChildren<RawImage>();
 		option1c = GameObject.Find("Option1c").GetComponentInChildren<RawImage>();
@@ -139,6 +140,10 @@ public class PathQuestions : MonoBehaviour
 		option4[3] = option4d;
 		option4[4] = option4e;
 
+		feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
 
 		warningMsg.SetActive(false);
 		paths_selected = new List<string>(answer_order.Count);
@@ -272,8 +277,33 @@ public class PathQuestions : MonoBehaviour
 		{
 			SequenceReader.pathSequenceIndex += 1; // mark question as completed
 			gameController.interruption_just_happened = 0;
-			gameController.changeScene();
+
+			if (gameController.PHASE == "TUTORIAL"){
+				setFeedback(percentRight == 100.0);
+				Invoke("placeholderDelay", 1);
+			}
+			else {
+				// don't delay transition to next question
+				gameController.changeScene();
+			}
 		}
+    }
+
+	void placeholderDelay()
+    {
+        // will delay before changing the scene
+        gameController.changeScene();
+    }
+
+	void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
     }
 
 	public string correct(){

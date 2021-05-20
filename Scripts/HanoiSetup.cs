@@ -30,6 +30,9 @@ public class HanoiSetup : MonoBehaviour
     public GameObject block3;
     public GameObject block4;
 
+    GameObject feedback_correct;
+    GameObject feedback_incorrect;
+
     public int skip = 0;
 
     public int n_blocks;
@@ -40,9 +43,12 @@ public class HanoiSetup : MonoBehaviour
 
     void Start()
     {
-
-
         gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
+
+        feedback_correct = GameObject.Find("Correct");
+        feedback_incorrect = GameObject.Find("Incorrect");
+        feedback_correct.SetActive(false);
+        feedback_incorrect.SetActive(false);
 
         if (gameController.counter == 0)
         {
@@ -313,9 +319,34 @@ public class HanoiSetup : MonoBehaviour
             gameController.allDataResults.Add(pathData);
             //Debug.Log("GOAL REACHED");
             timeTaken=0.0f;
-            gameController.changeScene();
+            if (gameController.PHASE == "TUTORIAL"){
+                setFeedback(ok == 1);
+                Invoke("placeholderDelay", 1);
+            }
+            else {
+                // don't delay transition to next question
+                gameController.changeScene();
+            }
         }
     }
+
+    void placeholderDelay()
+    {
+        // will delay before changing the scene
+        gameController.changeScene();
+    }
+
+    void setFeedback(bool status){
+        if (status == true){
+            feedback_correct.SetActive(true);
+            feedback_incorrect.SetActive(false);
+        }
+        else {
+            feedback_incorrect.SetActive(true);
+            feedback_correct.SetActive(false);
+        }
+    }
+
 
 
     public int spaceToOccupy(int column, HanoiPiece hp)
