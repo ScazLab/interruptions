@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Feedback : MonoBehaviour
 {
@@ -35,10 +36,14 @@ public class Feedback : MonoBehaviour
         {
             fillWarning.SetActive(true);
         } else {
+
+            string currScene = SceneManager.GetActiveScene().name;
+            currScene = currScene.Replace("Difficulty-", "");
+
             //CLData CLinfo = new CLData(qaArr[0].Answer, qaArr[1].Answer, qaArr[2].Answer, qaArr[3].Answer, qaArr[4].Answer, qaArr[5].Answer, qaArr[6].Answer, gameController.timestamp);
-            //data CLtest = new data(gameController.PHASE, qaArr[0].Answer, qaArr[1].Answer, qaArr[2].Answer, qaArr[3].Answer, qaArr[4].Answer, qaArr[5].Answer, qaArr[6].Answer, gameController.timestamp);
+            data CLtest = new data(gameController.PHASE, qaArr[0].Answer, qaArr[1].Answer, currScene, gameController.timestamp);
             //gameController.cognitiveLoadResults.Add(CLinfo);
-            //gameController.allDataResults.Add(CLtest);
+            gameController.allDataResults.Add(CLtest);
             //gameController.changeScene();
             Debug.Log("submit responses");
         }

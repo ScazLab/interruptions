@@ -67,18 +67,14 @@ public class data
         dataType = "demographic";
     }
 
-    public string simultaneous, complex, effort, understand, exhausting, inconvenient, difficult;
+    public string correctly, effort, task;
 
-    public data(string p, string s, string c, string e, string u, string ex, string i, string d, float ts)
+    public data(string p, string c, string e, string t, float ts)
     {
         duringPhaseNumber = p;
-        simultaneous = s;
-        complex = c;
+        correctly = c;
         effort = e;
-        understand = u;
-        exhausting = ex;
-        inconvenient = i;
-        difficult = d;
+        task = t;
         timestamp = ts;
         dataType = "cognitiveload";
     }
@@ -192,6 +188,7 @@ public class MainGameController : MonoBehaviour
     public int counter = 0;
     int middle_break = 1;
     public int tutorial_n = 1;
+    //public int tutorial_n = 7;
     public int h4_counterbalance;
 
     public bool endEarly = false;
@@ -205,6 +202,7 @@ public class MainGameController : MonoBehaviour
     //int pretraining_total = 4;
     //int pre_training_break = 1;
     int number_of_tasks = 21;
+    //int number_of_tasks = 2;
     int in_break = 0;
     int answered_one = 0;
 
@@ -234,6 +232,7 @@ public class MainGameController : MonoBehaviour
         starting_task = Random.Range(1, 3);
         //starting_task = 2;
         task_switching = Random.Range(1, 3);
+        //task_switching = 2;
         if (task_switching == 1) hypothesis = Constants.HYP_H1;
         if (task_switching == 2) hypothesis = Constants.HYP_H2;
         h4_counterbalance = Random.Range(1, 7); // 1NS 1SN N1S NS1 S1N SN1
@@ -410,6 +409,8 @@ public class MainGameController : MonoBehaviour
                 middle_break = 0;
                 counter = 0;
                 SceneManager.LoadScene("Break");
+                //csvStart();
+                //SceneManager.LoadScene("End");
             }
             else if (currently_interrupting == 0)
             {
@@ -531,6 +532,7 @@ public class MainGameController : MonoBehaviour
             {
                 phase = Constants.PHASE_END;
                 counter = 0;
+                csvStart();
                 SceneManager.LoadScene("End");
             }
 
@@ -633,6 +635,7 @@ public class MainGameController : MonoBehaviour
             if (counter == 9)
             {
                 phase = Constants.PHASE_END;
+                csvStart();
                 SceneManager.LoadScene("End");
             }
         }
@@ -849,27 +852,24 @@ public class MainGameController : MonoBehaviour
             {
 
                 csvRows.Add(new string[1]{"newline"});
-                string[] clHeader = new string[11] {"Phase", "Type", "Task","Simultaneous", "Complex", "Effort", "Understand", "Exhausting", "Inconvenient", "Difficult", "Time"};
+
+                string[] clHeader = new string[6] {"Phase", "Type", "Task", "Effort Invested", "Confident Correct", "Time"};
                 csvRows.Add(clHeader);
-                string[] clEntry = new string[11];
+                string[] clEntry = new string[6];
 
                 clEntry[0] = allDataResults[i].duringPhaseNumber;
                 clEntry[1] = "SURVEY";
-                clEntry[2] = "COGNITIVE LOAD";
-                clEntry[3] = allDataResults[i].simultaneous.Trim('\n');
-                clEntry[4] = allDataResults[i].complex.Trim('\n');
-                clEntry[5] = allDataResults[i].effort.Trim('\n');
-                clEntry[6] = allDataResults[i].understand.Trim('\n');
-                clEntry[7] = allDataResults[i].exhausting.Trim('\n');
-                clEntry[8] = allDataResults[i].inconvenient.Trim('\n');
-                clEntry[9] = allDataResults[i].difficult.Trim('\n');
-                clEntry[10] = allDataResults[i].timestamp.ToString();
+                clEntry[2] = allDataResults[i].task.Trim('\n');
+                clEntry[3] = allDataResults[i].effort.Trim('\n');
+                clEntry[4] = allDataResults[i].correctly.Trim('\n');
+                clEntry[5] = allDataResults[i].timestamp.ToString();
 
                 csvRows.Add(clEntry);
 
-                csvRows.Add(new string[1]{"newline"});
-                string[] interHeader = new string[9] {"Phase", "Type", "Task", "Participant Answer", "Right Answer", "Correct/Wrong", "Time Taken","Resumption Lag", "Time"};
-                csvRows.Add(interHeader);
+                //csvRows.Add(new string[1]{"newline"});
+                //csvRows.Add(new string[1]{"newline"});
+                //string[] interHeader = new string[9] {"Phase", "Type", "Task", "Participant Answer", "Right Answer", "Correct/Wrong", "Time Taken","Resumption Lag", "Time"};
+                //csvRows.Add(interHeader);
             }
             else if(allDataResults[i].dataType=="interruption/path")
             {
