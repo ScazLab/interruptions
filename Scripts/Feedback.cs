@@ -58,8 +58,10 @@ public class Feedback : MonoBehaviour
             {
               gameController.dataSet = true;
             }
+
             Debug.Log("submit responses");
             Debug.Log(currScene);
+            gameController.changeScene();
         }
     }
     QA ReadQuestionAndAnswer(GameObject questionGroup){

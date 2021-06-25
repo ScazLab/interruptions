@@ -202,8 +202,8 @@ public class MainGameController : MonoBehaviour
     //int assessment = 0;
     //int pretraining_total = 4;
     //int pre_training_break = 1;
-    int number_of_tasks = 21;
-    //int number_of_tasks = 2;
+    //int number_of_tasks = 21;
+    int number_of_tasks = 2;
     int in_break = 0;
     int answered_one = 0;
 
