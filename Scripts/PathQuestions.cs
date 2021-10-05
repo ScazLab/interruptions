@@ -62,7 +62,7 @@ public class PathQuestions : MonoBehaviour
 		}
 		else
 		{
-			counter.text = (gameController.counter).ToString() + "/20";
+			counter.text = (gameController.counter).ToString() + "/16";
 		}
 		gameController.interrupts_this_round = SequenceReader.pathSequence[SequenceReader.pathSequenceIndex].interrupts;
         //GameObject[] choices = GameObject.FindGameObjectsWithTag("AnswerChoice");

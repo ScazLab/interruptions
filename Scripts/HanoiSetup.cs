@@ -13,6 +13,7 @@ public class HanoiSetup : MonoBehaviour
     private MainGameController gameController;
     private SequenceReader.HanoiQuestion state = SequenceReader.hanoiSequence[SequenceReader.hanoiSequenceIndex];
 
+
     //public IList<int> height = new List<int>() { -50, -25, 0, 25, 50 };
     public IList<int> height = new List<int>() { -100, -50, 0, 50, 100 };
     public IList<int> peg = new List<int>() { -250, 0, 250 };
@@ -45,6 +46,7 @@ public class HanoiSetup : MonoBehaviour
     {
         gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
 
+
         feedback_correct = GameObject.Find("Correct");
         feedback_incorrect = GameObject.Find("Incorrect");
         feedback_correct.SetActive(false);
@@ -56,7 +58,7 @@ public class HanoiSetup : MonoBehaviour
         }
         else
         {
-            counter.text = (gameController.counter).ToString() + "/20";
+            counter.text = (gameController.counter).ToString() + "/16";
         }
 
         //gameController.moves_to_interrupt = state.moves_to_interrupt;
