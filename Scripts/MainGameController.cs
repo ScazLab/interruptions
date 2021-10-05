@@ -15,6 +15,7 @@ public class data
     public float timeTaken, timestamp;
     public string interruptionType, dataType, answerValue, duringPhaseNumber;
 
+
     public data(int parAns, int rAns, float t, string iType, string p, string a, float ts)
     {
         participantAnswer = parAns;
@@ -165,7 +166,7 @@ public class MainGameController : MonoBehaviour
 {
 
     public string part_id = "";
-
+    public bool dataSet = false;
     // lets assume now that we are only testing transferability on a novel task
     public List<string[]> csvRows = new List<string[]>();
     public StringBuilder sb = new StringBuilder();
@@ -530,10 +531,15 @@ public class MainGameController : MonoBehaviour
             }
             else
             {
-                phase = Constants.PHASE_END;
-                counter = 0;
-                csvStart();
-                SceneManager.LoadScene("End");
+                //phase = Constants.PHASE_END;
+                //counter = 0;
+                //if(dataSet)
+                //{
+                //  csvStart();
+                //  SceneManager.LoadScene("End");
+                  phase = Constants.PHASE_END;
+                  counter = 0;
+                //}
             }
 
         }
@@ -634,9 +640,16 @@ public class MainGameController : MonoBehaviour
 
             if (counter == 9)
             {
+              //if(dataSet)
+              //{
+              //  csvStart();
+              //  SceneManager.LoadScene("End");
                 phase = Constants.PHASE_END;
-                csvStart();
-                SceneManager.LoadScene("End");
+                counter = 0;
+              //}
+              //  phase = Constants.PHASE_END;
+              //  csvStart();
+              //  SceneManager.LoadScene("End");
             }
         }
     }
@@ -769,9 +782,16 @@ public class MainGameController : MonoBehaviour
 
             if (counter == 4)
             {
+              //if(dataSet)
+              //{
+                //csvStart();
+                //SceneManager.LoadScene("End");
                 phase = Constants.PHASE_END;
-                csvStart();
-                SceneManager.LoadScene("End");
+                counter = 0;
+              //}
+              //  phase = Constants.PHASE_END;
+              //  csvStart();
+              //  SceneManager.LoadScene("End");
             }
         }
     }
@@ -966,7 +986,15 @@ public class MainGameController : MonoBehaviour
         if (phase == Constants.PHASE_TESTING) PHASE = "TESTING";
         if (phase == Constants.PHASE_END) PHASE = "END";
 
-
+        if(phase==Constants.PHASE_END)
+        {
+          if(dataSet)
+          {
+            csvStart();
+            SceneManager.LoadScene("End");
+            dataSet=false;
+          }
+        }
 
         // check if it should interrupt
         if (((phase == Constants.PHASE_TRAINING) || (phase == Constants.PHASE_TESTING) || (phase == Constants.PHASE_ASSESSMENT)) && (in_break == 0))

@@ -39,13 +39,29 @@ public class Feedback : MonoBehaviour
 
             string currScene = SceneManager.GetActiveScene().name;
             currScene = currScene.Replace("Difficulty-", "");
+            if(currScene=="Draw")
+            {
+              currScene="path";
+            }
+            else if(currScene=="Math")
+            {
+              currScene = "area";
+            }
 
             //CLData CLinfo = new CLData(qaArr[0].Answer, qaArr[1].Answer, qaArr[2].Answer, qaArr[3].Answer, qaArr[4].Answer, qaArr[5].Answer, qaArr[6].Answer, gameController.timestamp);
             data CLtest = new data(gameController.PHASE, qaArr[0].Answer, qaArr[1].Answer, currScene, gameController.timestamp);
             //gameController.cognitiveLoadResults.Add(CLinfo);
             gameController.allDataResults.Add(CLtest);
             //gameController.changeScene();
+
+            if(gameController.PHASE=="TESTING"&&(currScene=="area"||currScene=="Stroop"))
+            {
+              gameController.dataSet = true;
+            }
+
             Debug.Log("submit responses");
+            Debug.Log(currScene);
+            gameController.changeScene();
         }
     }
     QA ReadQuestionAndAnswer(GameObject questionGroup){
