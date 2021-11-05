@@ -64,7 +64,7 @@ public class PathQuestions : MonoBehaviour
 		{
 			counter.text = (gameController.counter).ToString() + "/16";
 		}
-		gameController.interrupts_this_round = SequenceReader.pathSequence[SequenceReader.pathSequenceIndex].interrupts;
+		//gameController.interrupts_this_round = SequenceReader.pathSequence[SequenceReader.pathSequenceIndex].interrupts;
         //GameObject[] choices = GameObject.FindGameObjectsWithTag("AnswerChoice");
 		warningMsg = GameObject.Find("Warning");
 		textList = GameObject.Find("Answers").GetComponentsInChildren<Text>();

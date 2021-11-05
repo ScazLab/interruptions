@@ -171,8 +171,8 @@ public class MainGameController : MonoBehaviour
     public List<string[]> csvRows = new List<string[]>();
     public StringBuilder sb = new StringBuilder();
     public int interruption_task = 1; // if 1 then Stroop, if 2 Area
-    public int starting_task = 2; // if 1 then Hanoi, if 2 Drawing
-    public int task_switching; // if 1 then H1, otherwise H2
+    public int starting_task = 1; // if 1 then Drawing, else Hani
+    public int task_switching = 1; // if 1 then change task, else change interruption
 
 
     public previousHanoiGame previousHanoi = new previousHanoiGame();
@@ -229,11 +229,11 @@ public class MainGameController : MonoBehaviour
     private void Start()
     {
 
-        interruption_task = Random.Range(1, 3);
+        /*interruption_task = Random.Range(1, 3);
         starting_task = Random.Range(1, 3);
-        //starting_task = 2;
-        task_switching = Random.Range(1, 3);
-        //task_switching = 2;
+        task_switching = Random.Range(1, 3);*/
+
+
         if (task_switching == 1) hypothesis = Constants.HYP_H1;
         if (task_switching == 2) hypothesis = Constants.HYP_H2;
         h4_counterbalance = Random.Range(1, 7); // 1NS 1SN N1S NS1 S1N SN1
