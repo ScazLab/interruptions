@@ -56,7 +56,7 @@ public class PathQuestions : MonoBehaviour
 
 		// get elements in answer panel
     	gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
-		if (gameController.counter == 0)
+		if (gameController.phase == Constants.PHASE_TUTORIAL)
 		{
 			counter.text = "TUTORIAL";
 		}

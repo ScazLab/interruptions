@@ -170,16 +170,17 @@ public class MainGameController : MonoBehaviour
     // lets assume now that we are only testing transferability on a novel task
     public List<string[]> csvRows = new List<string[]>();
     public StringBuilder sb = new StringBuilder();
-    public int interruption_task = 1; // if 1 then Stroop, if 2 Area
     public int starting_task = 1; // if 1 then Drawing, else Hani
+    public int interruption_task = 1; // if 1 then Stroop, if 2 Area
     public int task_switching = 1; // if 1 then change task, else change interruption
+    public int experimental = 1; // if 0 then control
 
 
     public previousHanoiGame previousHanoi = new previousHanoiGame();
     public int interruption_just_happened = 0;
 
     public float timestamp = 0.0f;
-    public float timer = 100;
+    public float timer = 10;
     public int interrupts_this_round = 0;
     public int moves_to_interrupt = 999;
     public int listIndex = 0;
@@ -402,7 +403,55 @@ public class MainGameController : MonoBehaviour
 
 
         }
-        if (phase == Constants.PHASE_TRAINING)
+        if ((experimental == 2) && (phase == Constants.PHASE_TRAINING))
+        {
+            if (middle_break == 1)
+            {
+                in_break = 1;
+                middle_break = 0;
+                counter = 0;
+                SceneManager.LoadScene("Break");
+                counter = 0;
+                in_break = 0;
+            }
+            else if (counter >= 0 && counter < 16)
+            {
+                if (task_switching == 1)
+                {
+                    if (starting_task == 1) SceneManager.LoadScene("HanoiTask4");
+                    if (starting_task == 2) SceneManager.LoadScene("DrawTask");
+                }
+                else
+                {
+                    if (starting_task == 1) SceneManager.LoadScene("DrawTask");
+                    if (starting_task == 2) SceneManager.LoadScene("HanoiTask4");
+                }
+                counter += 1;
+            }
+            else if (counter > 15 && counter < 32)
+            {
+                Debug.Log(counter + "in main");
+                currently_interrupting = 1;
+                if (task_switching == 1)
+                {
+                    if (interruption_task == 1) SceneManager.LoadScene("StroopInterruption");
+                    if (interruption_task == 2) SceneManager.LoadScene("AreaInterruption");
+                }
+                else
+                {
+                    if (interruption_task == 1) SceneManager.LoadScene("AreaInterruption");
+                    if (interruption_task == 2) SceneManager.LoadScene("StroopInterruption");
+                }
+                answered_one = 1;
+            }
+            else if (counter == 32)
+            {
+                counter = 0;
+                phase = Constants.PHASE_DIFF_TRAIN;
+            }
+
+        }
+        if ((experimental == 1) && (phase == Constants.PHASE_TRAINING))
         {
             if (middle_break == 1)
             {
@@ -435,7 +484,8 @@ public class MainGameController : MonoBehaviour
             }
             else
             {
-                answered_one = 1;
+                currently_interrupting = 1;
+                
                 if (task_switching == 1)
                 {
                     if (interruption_task == 1) SceneManager.LoadScene("StroopInterruption");
@@ -446,11 +496,13 @@ public class MainGameController : MonoBehaviour
                     if (interruption_task == 1) SceneManager.LoadScene("AreaInterruption");
                     if (interruption_task == 2) SceneManager.LoadScene("StroopInterruption");
                 }
+                answered_one = 1;
             }
             if (counter == number_of_tasks)
             {
                 counter = 0;
                 phase = Constants.PHASE_DIFF_TRAIN;
+                currently_interrupting = 0;
             }
 
         }
@@ -489,6 +541,7 @@ public class MainGameController : MonoBehaviour
 
                 counter = 0;
                 phase = Constants.PHASE_TESTING;
+
             }
 
 
@@ -1077,23 +1130,57 @@ public class MainGameController : MonoBehaviour
             if (timer <= 0 && answered_one == 1)
             {
                 currently_interrupting = 0;
-                timer = 100;
+                timer = 10;
                 if (phase == Constants.PHASE_TRAINING)
                 {
-                    if (hypothesis > 4)
+                    if (experimental == 1)
                     {
-                        if (starting_task == 1) SceneManager.LoadScene("HanoiTask4");
-                        if (starting_task == 2) SceneManager.LoadScene("DrawTask2");
-                    }
-                    else if (task_switching == 1)
-                    {
-                        if (starting_task == 1) SceneManager.LoadScene("HanoiTask4");
-                        if (starting_task == 2) SceneManager.LoadScene("DrawTask2");
+                        if (hypothesis > 4)
+                        {
+                            if (starting_task == 1) SceneManager.LoadScene("HanoiTask4");
+                            if (starting_task == 2) SceneManager.LoadScene("DrawTask2");
+                        }
+                        else if (task_switching == 1)
+                        {
+                            if (starting_task == 1) SceneManager.LoadScene("HanoiTask4");
+                            if (starting_task == 2) SceneManager.LoadScene("DrawTask2");
+                        }
+                        else
+                        {
+                            if (starting_task == 1) SceneManager.LoadScene("DrawTask2");
+                            if (starting_task == 2) SceneManager.LoadScene("HanoiTask4");
+                        }
                     }
                     else
                     {
-                        if (starting_task == 1) SceneManager.LoadScene("DrawTask2");
-                        if (starting_task == 2) SceneManager.LoadScene("HanoiTask4");
+                        if (answered_one == 1)
+                        {
+                            answered_one = 0;
+                            counter += 1;
+                            timer = 10;
+                            currently_interrupting = 1;
+                            if (counter > 16 && counter < 32)
+                            {
+                                Debug.Log(counter + "in timer");
+                                if (task_switching == 1)
+                                {
+                                    if (interruption_task == 1) SceneManager.LoadScene("StroopInterruption");
+                                    if (interruption_task == 2) SceneManager.LoadScene("AreaInterruption");
+                                }
+                                else
+                                {
+                                    if (interruption_task == 1) SceneManager.LoadScene("AreaInterruption");
+                                    if (interruption_task == 2) SceneManager.LoadScene("StroopInterruption");
+                                }
+                            }
+                            else if (counter == 32)
+                            {
+                                counter = 0;
+                                phase = Constants.PHASE_DIFF_TRAIN;
+                                currently_interrupting = 0;
+                            }
+                            //answered_one = 1;
+                        }
                     }
                 }
                 if (phase == Constants.PHASE_TESTING || phase == Constants.PHASE_ASSESSMENT)

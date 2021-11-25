@@ -66,7 +66,14 @@ public class HanoiSetup : MonoBehaviour
         if (gameController.interruption_just_happened == 0)
         {
             //Debug.Log(state.moves_to_interrupt);
-            gameController.moves_to_interrupt = state.moves_to_interrupt;
+            if (gameController.experimental == 2 && gameController.phase == Constants.PHASE_TRAINING)
+            {
+                gameController.moves_to_interrupt = 999;
+            }
+            else
+            {
+                gameController.moves_to_interrupt = state.moves_to_interrupt;
+            }
             // debugging: read given intial orientation
             //Debug.Log("INTIAL ORIENTATION");
             /*for (int s = 0; s < n_blocks; s++)
