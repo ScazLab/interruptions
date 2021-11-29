@@ -24,7 +24,14 @@ public class PathVideo : MonoBehaviour
         Application.runInBackground = true;
         StartCoroutine(playVideo(true));
         gameController = GameObject.Find("MainGameController").GetComponent<MainGameController>();
-        gameController.interrupts_this_round = SequenceReader.pathSequence[SequenceReader.pathSequenceIndex].interrupts;
+        if ((gameController.experimental == 2) && (gameController.phase == Constants.PHASE_TRAINING))
+        {
+            gameController.interrupts_this_round = 0;
+        }
+        else
+        {
+            gameController.interrupts_this_round = SequenceReader.pathSequence[SequenceReader.pathSequenceIndex].interrupts;
+        }
     }
 
     IEnumerator playVideo(bool firstRun = true)

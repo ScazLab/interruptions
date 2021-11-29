@@ -600,9 +600,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   part_id: 
   dataSet: 0
-  interruption_task: 1
   starting_task: 1
+  interruption_task: 1
   task_switching: 1
+  experimental: 2
   interruption_just_happened: 0
   timestamp: 0
   timer: 10
