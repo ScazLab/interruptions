@@ -421,8 +421,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Copy the number down on a piece of paper and copy it into MTurk to collect
-    your participant payment.
+  m_Text: Copy the number down on a piece of paper and copy it into Prolific  to
+    collect your participant payment.
 --- !u!222 &528920618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -792,7 +792,6 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &1857754257
