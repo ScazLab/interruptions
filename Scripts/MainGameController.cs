@@ -428,7 +428,7 @@ public class MainGameController : MonoBehaviour
                 }
                 counter += 1;
             }
-            else if (counter > 15 && counter < 32)
+            else if (counter > 15 && counter < 24)
             {
                 Debug.Log(counter + "in main");
                 currently_interrupting = 1;
@@ -444,7 +444,7 @@ public class MainGameController : MonoBehaviour
                 }
                 answered_one = 1;
             }
-            else if (counter == 32)
+            else if (counter == 24)
             {
                 counter = 0;
                 phase = Constants.PHASE_DIFF_TRAIN;
@@ -1159,7 +1159,7 @@ public class MainGameController : MonoBehaviour
                             counter += 1;
                             timer = 10;
                             currently_interrupting = 1;
-                            if (counter > 16 && counter < 32)
+                            /*if (counter > 16 && counter < 24)
                             {
                                 Debug.Log(counter + "in timer");
                                 if (task_switching == 1)
@@ -1173,14 +1173,21 @@ public class MainGameController : MonoBehaviour
                                     if (interruption_task == 2) SceneManager.LoadScene("StroopInterruption");
                                 }
                             }
-                            else if (counter == 32)
+                            else if (counter == 24)
+                            {
+                                counter = 0;
+                                phase = Constants.PHASE_DIFF_TRAIN;
+                                currently_interrupting = 0;
+                            }*/
+                            if (counter == 24)
                             {
                                 counter = 0;
                                 phase = Constants.PHASE_DIFF_TRAIN;
                                 currently_interrupting = 0;
                             }
-                            //answered_one = 1;
-                        }
+
+                                //answered_one = 1;
+                            }
                     }
                 }
                 if (phase == Constants.PHASE_TESTING || phase == Constants.PHASE_ASSESSMENT)
